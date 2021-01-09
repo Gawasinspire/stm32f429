@@ -1,0 +1,110 @@
+ARM GAS  /tmp/cch9GJAb.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.eabi_attribute 27, 1
+   3              		.eabi_attribute 28, 1
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.main,"ax",%progbits
+  18              		.align	1
+  19              		.global	main
+  20              		.arch armv7e-m
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  24              		.fpu fpv4-sp-d16
+  26              	main:
+  27              	.LFB130:
+  28              		.file 1 "Src/main.c"
+   1:Src/main.c    **** #include "stm32f4xx.h"
+   2:Src/main.c    **** 
+   3:Src/main.c    **** #define GREEN_MODE   (1U<<0)
+   4:Src/main.c    **** #define BLUE_MODE  (1U<<14)
+   5:Src/main.c    **** #define RED_MODE (1U<<28)
+   6:Src/main.c    ****    
+   7:Src/main.c    **** #define GREEN_BIT   (1U<<0)
+   8:Src/main.c    **** #define BLUE_BIT  (1U<<7)
+   9:Src/main.c    **** #define RED_BIT (1U<<14)
+  10:Src/main.c    **** 
+  11:Src/main.c    **** 
+  12:Src/main.c    **** #define GPIOB_CLOCK  (1<<1)
+  13:Src/main.c    **** 
+  14:Src/main.c    **** int main()
+  15:Src/main.c    **** {
+  29              		.loc 1 15 1 view -0
+  30              		.cfi_startproc
+  31              		@ Volatile: function does not return.
+  32              		@ args = 0, pretend = 0, frame = 0
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		@ link register save eliminated.
+  16:Src/main.c    ****   RCC->AHB1ENR |=GPIOB_CLOCK;
+  35              		.loc 1 16 3 view .LVU1
+  36              		.loc 1 16 16 is_stmt 0 view .LVU2
+  37 0000 094A     		ldr	r2, .L3
+  38 0002 136B     		ldr	r3, [r2, #48]
+  39 0004 43F00203 		orr	r3, r3, #2
+  40 0008 1363     		str	r3, [r2, #48]
+  17:Src/main.c    ****   GPIOB->MODER |= GREEN_MODE|BLUE_MODE|RED_MODE;
+  41              		.loc 1 17 3 is_stmt 1 view .LVU3
+ARM GAS  /tmp/cch9GJAb.s 			page 2
+
+
+  42              		.loc 1 17 16 is_stmt 0 view .LVU4
+  43 000a A2F55052 		sub	r2, r2, #13312
+  44 000e 1168     		ldr	r1, [r2]
+  45 0010 064B     		ldr	r3, .L3+4
+  46 0012 0B43     		orrs	r3, r3, r1
+  47 0014 1360     		str	r3, [r2]
+  48              	.L2:
+  18:Src/main.c    **** 
+  19:Src/main.c    ****   while (1)
+  49              		.loc 1 19 3 is_stmt 1 discriminator 1 view .LVU5
+  20:Src/main.c    ****   {
+  21:Src/main.c    ****     GPIOB->ODR |=RED_BIT|BLUE_BIT|GREEN_BIT;
+  50              		.loc 1 21 5 discriminator 1 view .LVU6
+  51              		.loc 1 21 16 is_stmt 0 discriminator 1 view .LVU7
+  52 0016 064A     		ldr	r2, .L3+8
+  53 0018 5369     		ldr	r3, [r2, #20]
+  54 001a 43F48143 		orr	r3, r3, #16512
+  55 001e 43F00103 		orr	r3, r3, #1
+  56 0022 5361     		str	r3, [r2, #20]
+  19:Src/main.c    ****   {
+  57              		.loc 1 19 9 is_stmt 1 discriminator 1 view .LVU8
+  58 0024 F7E7     		b	.L2
+  59              	.L4:
+  60 0026 00BF     		.align	2
+  61              	.L3:
+  62 0028 00380240 		.word	1073887232
+  63 002c 01400010 		.word	268451841
+  64 0030 00040240 		.word	1073873920
+  65              		.cfi_endproc
+  66              	.LFE130:
+  68              		.text
+  69              	.Letext0:
+  70              		.file 2 "/usr/lib/gcc/arm-none-eabi/9.2.1/include/stdint.h"
+  71              		.file 3 "Drivers/CMSIS/Include/core_cm4.h"
+  72              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"
+  73              		.file 5 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f429xx.h"
+  74              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ARM GAS  /tmp/cch9GJAb.s 			page 3
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 main.c
+     /tmp/cch9GJAb.s:18     .text.main:0000000000000000 $t
+     /tmp/cch9GJAb.s:26     .text.main:0000000000000000 main
+     /tmp/cch9GJAb.s:62     .text.main:0000000000000028 $d
+
+NO UNDEFINED SYMBOLS
