@@ -17,15 +17,65 @@ volatile uint32_t _tick;
 
 void GPIO_Init(void);
 void Delays(uint32_t seconds);
+void BlueOn(void);
+void BlueOff(void);
+void GreenOn(void);
+void GreenOff(void);
 
-int main()
+uint32_t green_stack[40];
+uint32_t blue_stack[40];
+
+uint32_t *sp_green = &green_stack[40];
+uint32_t *sp_blue = &blue_stack[40];
+//simple thread examples
+int blue_main()
 {
-  GPIO_Init();  
+  while (1)
+  {  
+    BlueOn();
+    Delays(1);
+    BlueOff();
+    Delays(1);
+ }  
+}
+
+
+int green_main()
+{
   while (1)
   {
-    GPIOB->ODR ^=RED_BIT|BLUE_BIT|GREEN_BIT;
+    GreenOn();
     Delays(1);
-    //for(int i=0;i<500000;i++){  }
+    GreenOff();
+    Delays(1);
+  }
+   
+}
+int main()
+{ 
+  GPIO_Init();  
+  //stack frame for green thread
+      *(--sp_green) = (1U << 24);   /*xpsr*/
+      *(--sp_green) = (uint32_t)&green_main; /*pc*/
+      *(--sp_green) = 0x0000000DU;   /*LR */
+      *(--sp_green) = 0x0000000EU;   /*R12*/
+      *(--sp_green) = 0x0000000AU;   /*R3 */
+      *(--sp_green) = 0x0000000EU;   /*R2 */
+      *(--sp_green) = 0x0000000AU;   /*R1 */
+      *(--sp_green) = 0x0000000DU;   /*R0 */
+  
+  //stack frame for blue thread
+      *(--sp_blue) = (1U << 24);   /*xpsr*/
+      *(--sp_blue) = (uint32_t)&blue_main; /*pc*/
+      *(--sp_blue) = 0x0000000BU;   /*LR */
+      *(--sp_blue) = 0x0000000EU;   /*R12*/
+      *(--sp_blue) = 0x0000000EU;   /*R3 */
+      *(--sp_blue) = 0x0000000EU;   /*R2 */
+      *(--sp_blue) = 0x0000000EU;   /*R1 */
+      *(--sp_blue) = 0x0000000FU;   /*R0 */
+  
+  while (1)
+  {
   }
   
 }
@@ -57,8 +107,29 @@ void Delays(uint32_t seconds)
 {
   seconds *=100;
   uint32_t temp = getTick();
-  while((getTick()-temp)<seconds){
-
-  }
+  while((getTick()-temp)<seconds){}
 
 }
+
+void BlueOn(void)
+{
+  GPIOB->ODR |=BLUE_BIT;
+}
+
+
+void BlueOff(void)
+{
+  GPIOB->ODR &=~BLUE_BIT;
+}
+
+void GreenOn(void)
+{
+  GPIOB->ODR |=GREEN_BIT;
+}
+
+
+void GreenOff(void)
+{
+  GPIOB->ODR &=~GREEN_BIT;
+}
+
